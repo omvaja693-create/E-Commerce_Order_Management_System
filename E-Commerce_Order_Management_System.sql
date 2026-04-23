@@ -175,3 +175,16 @@ select c.Name, o.Order_id from customer c
 full outer join orders o on c.Customer_id = o.Customer_id
 where o.Order_id is null;
 
+-- 8. Use Subqueries.
+
+-- . Find orders placed by customers who refistered after 2022.
+select * from orders where Customer_id in (select Customer_id from customer where Registration_Date > '2022-01-01');
+
+-- . Identify customers who have spent the most .
+select Customer_id, SUM(Total_Amount) as Total_Spent from orders group by Customer_id order by Total_Spent desc limit 1;
+
+-- . Get Products that have never been ordered.
+select * from product where ProductID not in (select Product_id from order_items);
+
+-- 9. Date and Time Functions
+
