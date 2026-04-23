@@ -188,3 +188,4 @@ select * from product where ProductID not in (select Product_id from order_items
 
 -- 9. Date and Time Functions
 
+-- . Extract the month from 
