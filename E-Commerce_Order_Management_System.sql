@@ -194,3 +194,9 @@ select MONTH(Order_Date) as Order_Month, COUNT(Order_id) as Order_Count from ord
 -- . Calculate Delhivery time by finding the difference between Shipping_Date and Delivery_Date.
 select Order_id, DATEDIFF(Delivery_Date, Shipping_Date) as Delivery_Time from shipping;
 
+-- . Formate order_date as DD-MM-YYYY.
+select Order_id, DATE_FORMAT(Order_Date, '%d-%m-%Y') as Formatted_Order_Date from orders;
+
+-- 10. String Functions.
+
+-- . 
