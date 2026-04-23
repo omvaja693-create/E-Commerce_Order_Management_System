@@ -120,3 +120,11 @@ select * from product where Stock_Quantity > 0;
 
 -- . retrive customers who registered after 2022 or made purchase > 10000.
 select * from customer where Registration_Date > '2022-01-01' or Customer_id in (select Customer_id from orders where Total_Amount > 10000);
+
+-- 4. Sorting and Grouping (order by, group by)
+
+-- . List all products sorted by price in descending order.
+select * from product order by Price desc);
+
+-- . Display the number of orders placed by each customer.
+select Customer_id, count(Order_id) as Order_Count from orders group by Customer_id;
