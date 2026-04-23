@@ -239,6 +239,13 @@ END as Loyalty_Status from orders group by Customer_id;
 -- if sold quantity between 200 and 500 then 'Popular'
 -- else 'Regular'
 
+select Product_id, SUM(Quantity) as Total_Sold,
+CASE
+    WHEN SUM(Quantity) > 500 THEN 'Best Seller'
+    WHEN SUM(Quantity) BETWEEN 200 AND 500 THEN 'Popular'
+    ELSE 'Regular'
+END as Product_Category from order_items group by Product_id;   
+
 
 
 
