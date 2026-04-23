@@ -1,0 +1,122 @@
+-- Database Creation:
+
+drop database if exists E_Commerce_Order_Management_System;
+create database E_Commerce_Order_Management_System;
+use E_Commerce_Order_Management_System;
+
+-- Product Table
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Category_id INT,
+    Price DECIMAL(10, 2) NOT NULL,
+    Stock_Quantity INT NOT NULL,
+    Added_Date Date NOT NULL,
+
+    foreign key (Category_id) references Category(Category_id)
+);
+-- Category Table
+CREATE TABLE Category (
+    Category_id INT PRIMARY KEY AUTO_INCREMENT,
+    Category_name VARCHAR(255) NOT NULL
+);
+-- Customer Table
+CREATE TABLE Customer (
+    Customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Phone_Number VARCHAR(20),
+    Address VARCHAR(100)
+    Registration_Date Date NOT NULL
+);
+-- Orders Table
+CREATE TABLE Orders (
+    Order_id INT PRIMARY KEY AUTO_INCREMENT,
+    Customer_id INT,
+    Order_Date Date NOT NULL,
+    Total_Amount DECIMAL(10, 2) NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+);
+-- Order_Items Table
+CREATE TABLE Order_Items (
+    Order_Item_id INT PRIMARY KEY AUTO_INCREMENT,
+    Order_id INT,
+    Product_id INT,
+    Quantity INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+
+    foreign key (Order_id) references Orders(Order_id),
+    foreign key (Product_id) references Product(Product_id)
+);
+-- Payment Table
+CREATE TABLE Payment (
+    Payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    Order_id INT,
+    Payment_Date Date NOT NULL,
+    Payment_Method VARCHAR(50) NOT NULL,
+    Payment_Status VARCHAR(50) NOT NULL,
+    foreign key (Order_id) references Orders(Order_id)
+);
+-- Shipping Table
+CREATE TABLE Shipping (
+    Shipping_id INT PRIMARY KEY AUTO_INCREMENT,
+    Order_id INT,
+    Shipping_Date Date NOT NULL,
+    Delivery_Date Date,
+    Shipping_Status VARCHAR(50) NOT NULL,
+    foreign key (Order_id) references Orders(Order_id)
+);
+
+-- Sample Data Insertion:
+
+-- Tasks and Functionalities:
+
+-- 1. Implement Crud Operatioins
+
+-- . Insert a new product, customer, order into the database.
+insert into products(
+    Name, Category_id, Price, Stock_Quantity, Added_Date
+) values (
+    'Laptop', 500, 50, '2024-01-01'    
+);
+
+insert into customer(
+    Name, Email, Phone_Number, Address, Registration_Date
+) values (
+    'John Doe', 'john.doe@example.com', '123-456-7890', '123 Main St', '2024-01-01'
+);
+
+insert into orders(
+    Customer_id, Order_Date, Total_Amount, Status
+) values (
+    1, '2024-01-01', 500.00, 'Pending'
+);
+
+-- . Update the stock quantity When an order is placed.
+update product set Stock_Quantity = Stock_Quantity - 1 where ProductID = 1;
+
+-- . Delete orders that were canceled more then 30 days ago.
+delete from orders where Status = 'Canceled' and Order_Date < DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+
+
+-- 2. Use SQL Clause (Having,Where,Limit)
+
+-- . Find all orders placed in last 6 months.
+select * from orders where Order_Date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+
+-- . get the top 5 higest-priced products
+select * from product order by Price desc limit 5;
+
+-- . Find the customer who has placed more then 3 orders.
+select Customer_id, count(Order_id) as Order_Count from orders group by Customer_id having Order_Count > 3;
+
+-- 3. Apply SQL Operations (And, Or, Not)
+
+-- . Get all products where status is pending and payment status is Paid.
+select * from orders where Status = 'Pending' and Payment_Status = 'Paid';
+
+-- Find all products that are Not out of stock.
+select * from product where Stock_Quantity > 0;
+
+-- . retrive customers who registered after 2022 or made purchase > 10000.
+select * from customer where Registration_Date > '2022-01-01' or Customer_id in (select Customer_id from orders where Total_Amount > 10000);
