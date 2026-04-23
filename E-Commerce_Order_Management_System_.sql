@@ -415,3 +415,5 @@ CASE
     ELSE 'Regular'
 END AS Product_Category
 FROM Order_Items GROUP BY Product_id;
+
+-- End.
