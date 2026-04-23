@@ -188,4 +188,9 @@ select * from product where ProductID not in (select Product_id from order_items
 
 -- 9. Date and Time Functions
 
--- . Extract the month from 
+-- . Extract the month from order_date to count orders per month.
+select MONTH(Order_Date) as Order_Month, COUNT(Order_id) as Order_Count from orders group by Order_Month;
+
+-- . Calculate Delhivery time by finding the difference between Shipping_Date and Delivery_Date.
+select Order_id, DATEDIFF(Delivery_Date, Shipping_Date) as Delivery_Time from shipping;
+
