@@ -145,3 +145,33 @@ select AVG(Total_Amount) as Average_Order_Value from orders;
 
 -- 6. Establish Primary and Foreign Key Relationships
 
+-- . Ensure orders are linked to customers.
+ALTER TABLE orders
+ADD CONSTRAINT fk_customer
+FOREIGN KEY (Customer_id) REFERENCES Customer(Customer_id);
+
+-- . Establish a relationship between payments and orders.
+ALTER TABLE payment
+ADD CONSTRAINT fk_order_payment
+FOREIGN KEY (Order_id) REFERENCES Orders(Order_id);
+
+-- 7. Joins
+
+-- . Retrive a list of products along with their category names using  inner join.
+select p.Name, c.Category_name from product p
+inner join category c on p.Category_id = c.Category_id;
+
+-- . get all orders with customer details using left join.
+select o.Order_id, o.Order_Date, c.Name, c.Email from orders o
+left join customer c on o.Customer_id = c.Customer_id;
+
+-- . find orders that haven't been shipped using right join.
+select o.Order_id, s.Shipping_Status from orders o
+right join shipping s on o.Order_id = s.Order_id
+where s.Shipping_Status is null;
+
+-- show customers who have never placed an order using full outer join.
+select c.Name, o.Order_id from customer c
+full outer join orders o on c.Customer_id = o.Customer_id
+where o.Order_id is null;
+
