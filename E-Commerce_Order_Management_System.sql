@@ -209,3 +209,12 @@ select Name, TRIM(Name) as Trimmed_Name from customer;
 select Name, IFNULL(Email, 'No Email Provided') as Email from customer;
 
 -- 11. Implement Windows Functions.
+
+-- . Rank customers based on total spending.
+select Customer_id, SUM(Total_Amount) as Total_Spent, RANK() OVER (ORDER BY SUM(Total_Amount) DESC) as Spending_Rank from orders group by Customer_id;
+
+-- . Show the cumulative total revenue per month.
+select MONTH(Order_Date) as Order_Month, SUM(Total_Amount) as Monthly_Revenue, SUM(SUM(Total_Amount)) OVER (ORDER BY MONTH(Order_Date)) as Cumulative_Revenue from orders group by Order_Month;
+
+
+
