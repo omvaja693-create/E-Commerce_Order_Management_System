@@ -199,4 +199,13 @@ select Order_id, DATE_FORMAT(Order_Date, '%d-%m-%Y') as Formatted_Order_Date fro
 
 -- 10. String Functions.
 
--- . 
+-- . Convert all product names to uppercase.
+select Name, UPPER(Name) as Uppercase_Name from product;
+
+-- . Trim Whitespace from customer names.
+select Name, TRIM(Name) as Trimmed_Name from customer;
+
+-- . Replace missing email values with 'No Email Provided'.
+select Name, IFNULL(Email, 'No Email Provided') as Email from customer;
+
+-- 11. Implement Windows Functions.
