@@ -216,5 +216,29 @@ select Customer_id, SUM(Total_Amount) as Total_Spent, RANK() OVER (ORDER BY SUM(
 -- . Show the cumulative total revenue per month.
 select MONTH(Order_Date) as Order_Month, SUM(Total_Amount) as Monthly_Revenue, SUM(SUM(Total_Amount)) OVER (ORDER BY MONTH(Order_Date)) as Cumulative_Revenue from orders group by Order_Month;
 
+-- . Display the running total of orders placed.
+select Order_Date, COUNT(Order_id) as Daily_Orders, SUM(COUNT(Order_id)) OVER (ORDER BY Order_Date) as Running_Total_Orders from orders group by Order_Date;
+
+-- 12. SQL CASES.
+
+-- . Assign a loyalty_status to customers:
+-- if total spending > 50000 then 'Gold'
+-- if total spending between 20000 and 50000 then 'Silver'
+-- else 'Bronze'
+
+select Customer_id, SUM(Total_Amount) as Total_Spent,
+CASE
+    WHEN SUM(Total_Amount) > 50000 THEN 'Gold'
+    WHEN SUM(Total_Amount) BETWEEN 20000 AND 50000 THEN 'Silver'
+    ELSE 'Bronze'
+END as Loyalty_Status from orders group by Customer_id;
+
+-- . Categorize products
+
+-- if sold quantity > 500 then 'Best Seller'
+-- if sold quantity between 200 and 500 then 'Popular'
+-- else 'Regular'
+
+
 
 
